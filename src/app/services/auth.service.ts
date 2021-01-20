@@ -20,12 +20,14 @@ export class AuthService {
     return this.afa.signInWithEmailAndPassword(user.email, user.password);
   }
 
-  logout() {}
+  // Encerra sessão
+  logout() {
+    return this.afa.signOut();
+  }
 
-
+  // Verifica sessão do usuário
   getAuth() {
     return this.afa;
   }
-
 
 }
