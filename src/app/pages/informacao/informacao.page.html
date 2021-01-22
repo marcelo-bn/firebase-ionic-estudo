@@ -7,6 +7,8 @@
 <ion-content>
     <div *ngIf="usuario">
         <h3>{{usuario.id}}</h3>
+        <h3>{{usuario.nome}}</h3>
+        <h3>{{usuario.email}}</h3>
     </div>
     <div>
       <ion-button (click)="logout()" color="danger" expand="block">

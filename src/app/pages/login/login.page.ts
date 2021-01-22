@@ -39,15 +39,13 @@ export class LoginPage implements OnInit {
     }
   }
 
-
   // Registra usuário
   async register() {
     await this.presentLoading()
 
     try {
       const user = await this.authService.register(this.userRegister)
-      console.log(user.user.uid, user.user.email)
-      this.usuarioService.setData("",user.user.email,user.user.uid)
+      this.usuarioService.setData(this.userRegister.nome,user.user.email,user.user.uid) // Service para acesso global dos dados
     } catch (error) {
       let message: string;
       switch(error.code) {
@@ -60,14 +58,11 @@ export class LoginPage implements OnInit {
       }
       this.presentToast(message)
     } finally {
+      this.userLogin = {}
       this.loading.dismiss()
     }
-    /*console.log(this.userRegister)
-    const newUser = await this.authService.register(this.userRegister)
-    console.log(newUser.user.uid)
-    this.loading.dismiss()*/
-  }
 
+  }
 
   // Login usuário
   async login() { 
@@ -75,7 +70,9 @@ export class LoginPage implements OnInit {
 
     try {
       let user = await this.authService.login(this.userLogin)
-      console.log(user.user.uid)
+      // Service para acesso global dos dados, aqui so precisa do uid pois o usuario ja foi inserido
+      // no banco ao se registrar
+      this.usuarioService.setData("","",user.user.uid) 
     } catch (error) {
       let message: string;
       switch(error.code) {
@@ -83,16 +80,19 @@ export class LoginPage implements OnInit {
           message = "Este usuário não existe!"
           break
         case 'auth/wrong-password':
-          message = "Senha inválida!"
+          message = "E-mail ou senha inválida!"
+          break
+        case 'auth/invalid-email':
+          message = "E-mail ou senha inválida!"
           break
       }
       this.presentToast(message)
     } finally {
+      this.userLogin = {}
       this.loading.dismiss()
     }
 
   }
-
 
   // Mensagem loading
   async presentLoading() {
