@@ -1,7 +1,7 @@
-ion-content {
+/*ion-content {
     --background: linear-gradient(197deg, rgb(200, 238, 188) 0%, rgb(174, 236, 155)  13.5%, 
     rgb(147, 236, 120) 33.33%, rgb(125, 197, 103) 100%) !important;
-}
+}*/
 
 .container {
     position: absolute;
@@ -10,29 +10,39 @@ ion-content {
     width: 75%;
     margin: 0 auto;
     z-index: 2;
-    background-color:  rgb(238, 248, 143);  
+    background-image: linear-gradient(to top, rgba(255,0,0,0), rgb(147, 236, 120));
     border-radius: 10px;
 
     &.top {
-        top: 15%;
+        top: 25%;
+        width: 65%;
+        height: 50%;
     }
 
     &.bottom {
-        bottom: 30%;
-
+        bottom: 15%;
+        width: 65%;
+        background-color:  rgb(208, 247, 196);  
         span {
             color: #fff;
         }
     }
 }
 
+.img {
+    position: absolute;
+    left: 35px;
+    top: 2%;
+}
+
 ion-slides {
     height: 100%;
 
     .slide-inner {
+
         width: 75%;
         color: black;
-        background-color: rgb(238, 248, 143) ;
+        //background-color: rgb(125, 197, 103);
         border-radius: 10px;
 
         ion-item {
@@ -40,7 +50,7 @@ ion-slides {
             --border-radius: 10px;
 
             ion-input {
-                --color: black;
+                --color: grey;
             }
         }
 
@@ -49,4 +59,5 @@ ion-slides {
         }
     }
 }
+
 

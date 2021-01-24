@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
       }
       this.presentToast(message)
     } finally {
-      this.userLogin = {}
+      this.userRegister = {}
       this.loading.dismiss()
     }
 
