@@ -94,6 +94,9 @@ export class LoginPage implements OnInit {
 
   }
 
+  // Recuperar senha
+  async forgotPassword() { console.log("password") }
+
   // Mensagem loading
   async presentLoading() {
     this.loading = await this.loadingCtrl.create({message: 'Por favor, aguarde...'});
