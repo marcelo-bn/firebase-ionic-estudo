@@ -2,12 +2,8 @@ import java.util.Scanner;
 
 public class Principal {
 
-    private final String[] LOGIN = {
-            "\n..:: Olá! insira seu login ::..\n"
-    };
-
-    private final String[] CLIENTE_principal = {
-            "\n..:: Bem vindo! Selecione uma das opções ::..\n",
+    private final String[] CONSUMIDOR_principal = {
+            "..:: Bem vindo! Selecione uma das opções ::..\n",
             "1 - Comprar",
             "2 - Listar todas as compras",
             "3 - Listar compras pendentes",
@@ -23,9 +19,11 @@ public class Principal {
     };
 
     private Scanner teclado;
+    private Usuario usuario;
 
     public Principal() {
         this.teclado = new Scanner(System.in);
+        this.usuario = new Usuario();
     }
 
     public static void main(String[] args) {
@@ -33,20 +31,18 @@ public class Principal {
         Principal p = new Principal();
         int op = -1;
 
-        //System.out.println(p.LOGIN);
+        // Objeto Usuario
         Usuario u = p.login();
+        System.out.println("> Olá, " + u.getNome() + "!");
 
-        // Scanner teclado = new Scanner(System.in);;
-        /*LoginMySQL app = new LoginMySQL();
-        System.out.println("Insira seu login: ");
-
-        String nome = this.teclado.nextLine();
-        String user = app.listaLogin(nome);
-        if (user.equals("error")) {
-            System.out.println("Login inválido");
+        // Verificando tipo do usuário
+        if (u.getTipo().equals("consumidor")) {
+            op = p.menuGeral(p.CONSUMIDOR_principal);
+            System.out.println(op);
         } else {
-            System.out.println("Bem vindo " + user + "!");
-        }*/
+            System.out.println("prestador");
+        }
+
     }
 
     private int menuGeral(String[] menuComOpcoes) {
@@ -68,29 +64,34 @@ public class Principal {
         return opcao;
     }
 
+    /**
+     * Realiza o procedimento de login no sistema
+     * @return Usuario
+     */
     private Usuario login() {
         LoginMySQL app = new LoginMySQL();
         Usuario usuario = new Usuario();
-        String[] teste = new String[7];
+        boolean ok = true;
 
-        /* Autenticando Login*/
-        System.out.println("Insira seu login: ");
-        String nome = this.teclado.nextLine();
-        String user = app.verificaLogin(nome);
-        if (user.equals("error")) {
-            System.out.println("Login inválido");
-        } else {
-            System.out.println("Bem vindo " + user + "!");
+        System.out.println("..:: Seja bem vindo! ::..");
 
-            /* Pegando informações do Login*/
-            teste = app.infoLogin(user);
+        while (ok) {
+            System.out.println("> Insira seu login: ");
+            String nome = this.teclado.nextLine();
+            String[] user = app.verificaLogin(nome);
 
-            for (int i = 0; i < 7; i++) {
-                System.out.println(teste[i]);
+            if (user[0].equals("error")) {
+                System.out.println("> Login inválido");
+            } else {
+                usuario = app.infoLogin(user);
+                ok = false;
             }
-
         }
+
         return usuario;
     }
-    private void compra() {}
+
+    private void consumidor() {}
+
+    private void prestador() {}
 }

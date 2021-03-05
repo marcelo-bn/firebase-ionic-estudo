@@ -9,10 +9,11 @@ public class LoginMySQL {
     /**
      * Listando todos os logins de Consumidor e Prestador
      */
-    public String verificaLogin(String n) {
+    public String[] verificaLogin(String n) {
         String nome = n;
-        String user = "";
-        String query = "SELECT login FROM Consumidor UNION SELECT login FROM Prestador;";
+        String[] user = new String[2];
+        String tipo = "";
+        String query = "(SELECT login, tipo FROM Consumidor) UNION (SELECT login, tipo FROM Prestador)";
 
         try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
@@ -20,47 +21,57 @@ public class LoginMySQL {
 
             while(rs.next()) {
                 String loginrs = rs.getString("login");
+                String tipors = rs.getString("tipo");
                 if (loginrs.equals(nome)) {
                     aux = true;
-                    user = loginrs;
+                    user[0] = loginrs;
+                    user[1] = tipors;
                 }
             }
 
             if (!aux) {
-                user = "error";
+                user[0] = "error";
+                user[1] = "error";
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return user;
     }
 
     /**
         Informações de determinado usuário
      */
-    public String[] infoLogin(String login) {
-        String query = "SELECT * FROM Consumidor WHERE login = " + "\'" + login + "\'";
-        String[] usuario = new String[7];
+    public Usuario infoLogin(String[] login) {
+        String query = "";
+
+        if (login[1].equals("consumidor")) {
+            query = "SELECT * FROM Consumidor WHERE login = " + "\'" + login[0] + "\'";
+        } else {
+            query = "SELECT * FROM Prestador WHERE login = " + "\'" + login[0] + "\'";
+        }
+
+        Usuario usuario = new Usuario();
 
         try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while(rs.next()) {
-                /*String login_rs = rs.getString("login");
-                String senha_rs = rs.getString("senha");
-                String tipo_rs = rs.getString("tipo");
-                String nomeCliente_rs = rs.getString("nomeCliente");
-                String telefoneCliente_rs = rs.getString("telefoneCliente");
-                String enderecoCliente_rs = rs.getString("enderecoCliente");
-                String numCartao_rs = rs.getString("numCartao");*/
-                usuario[0] = rs.getString("login");
-                usuario[1] = rs.getString("senha");
-                usuario[2] = rs.getString("tipo");
-                usuario[3] = rs.getString("nomeCliente");
-                usuario[4] = rs.getString("telefoneCliente");
-                usuario[5] = rs.getString("enderecoCliente");
-                usuario[6] = rs.getString("numCartao");
+
+                usuario.setLogin(rs.getString("login"));
+                usuario.setSenha(rs.getString("senha"));
+                usuario.setTipo(rs.getString("tipo"));
+                usuario.setNome(rs.getString("nome"));
+                usuario.setTelefone(rs.getString("telefone"));
+                usuario.setEndereco(rs.getString("endereco"));
+
+                if (rs.getString("tipo").equals("consumidor")) {
+                    usuario.setNumCartao(rs.getString("numCartao"));
+                } else {
+                    usuario.setDescGeral(rs.getString("descGeral"));
+                }
 
             }
 

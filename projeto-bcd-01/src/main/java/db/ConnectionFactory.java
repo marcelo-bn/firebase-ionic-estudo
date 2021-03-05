@@ -46,7 +46,7 @@ public abstract class ConnectionFactory {
             String port = properties.getProperty("port");
             String dbname = properties.getProperty("database");
 
-            String url = "jdbc:mysql://" + host + ":" + port + "/" + dbname;
+            String url = "jdbc:mysql://" + host + ":" + port + "/" + dbname + "?allowPublicKeyRetrieval=true&useSSL=false";
 
             cnx = DriverManager.getConnection(url, properties);
 

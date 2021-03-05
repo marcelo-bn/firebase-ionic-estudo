@@ -2,10 +2,11 @@ public class Usuario {
     private String login;
     private String senha;
     private String tipo;
-    private String nomeCliente;
-    private String telefoneCliente;
-    private String enderecoCliente;
+    private String nome;
+    private String telefone;
+    private String endereco;
     private String numCartao;
+    private String descGeral;
 
     public Usuario() { }
 
@@ -33,28 +34,28 @@ public class Usuario {
         this.tipo = tipo;
     }
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getTelefoneCliente() {
-        return telefoneCliente;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setTelefoneCliente(String telefoneCliente) {
-        this.telefoneCliente = telefoneCliente;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public String getEnderecoCliente() {
-        return enderecoCliente;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setEnderecoCliente(String enderecoCliente) {
-        this.enderecoCliente = enderecoCliente;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public String getNumCartao() {
@@ -63,5 +64,13 @@ public class Usuario {
 
     public void setNumCartao(String numCartao) {
         this.numCartao = numCartao;
+    }
+
+    public String getDescGeral() {
+        return descGeral;
+    }
+
+    public void setDescGeral(String descGeral) {
+        this.descGeral = descGeral;
     }
 }
