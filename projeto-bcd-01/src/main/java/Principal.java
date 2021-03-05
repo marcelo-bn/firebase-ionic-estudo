@@ -1,3 +1,6 @@
+import DAO.LoginDAO;
+import entities.Usuario;
+
 import java.util.Scanner;
 
 public class Principal {
@@ -31,16 +34,36 @@ public class Principal {
         Principal p = new Principal();
         int op = -1;
 
-        // Objeto Usuario
+        // Objeto entities.Usuario
         Usuario u = p.login();
         System.out.println("> Olá, " + u.getNome() + "!");
 
         // Verificando tipo do usuário
         if (u.getTipo().equals("consumidor")) {
-            op = p.menuGeral(p.CONSUMIDOR_principal);
-            System.out.println(op);
+
+            do {
+                op = p.menuGeral(p.CONSUMIDOR_principal);
+
+                switch (op) {
+                    case 1:
+                        /*
+                        * 1 - Listar categorias
+                        *
+                        * 2 - voltar
+                        *
+                        *
+                        * */
+
+                }
+
+
+
+            } while(op!=4);
+
+
         } else {
-            System.out.println("prestador");
+            op = p.menuGeral(p.PRESTADOR_principal);
+            System.out.println(op);
         }
 
     }
@@ -66,10 +89,10 @@ public class Principal {
 
     /**
      * Realiza o procedimento de login no sistema
-     * @return Usuario
+     * @return entities.Usuario
      */
     private Usuario login() {
-        LoginMySQL app = new LoginMySQL();
+        LoginDAO app = new LoginDAO();
         Usuario usuario = new Usuario();
         boolean ok = true;
 
