@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Principal {
 
     private final String[] CONSUMIDOR_principal = {
-            "> Bem vindo! Selecione uma das opções \n",
+            "\n> Bem vindo! Selecione uma das opções",
             "1 - Comprar",
             "2 - Listar todas as compras",
             "3 - Listar compras pendentes",
@@ -50,7 +50,7 @@ public class Principal {
                 switch (op) {
                     case 1:
                         if (p.consumidorCompra()) {
-                            System.out.println("> Compra finalizada!");
+                            System.out.println("> Compra realizada!");
                         } else {
                             System.out.println("> Compra cancelada!");
                         }
@@ -104,7 +104,7 @@ public class Principal {
         Usuario usuario = new Usuario();
         boolean ok = true;
 
-        System.out.println("..:: Seja bem vindo! ::..");
+        System.out.println("..:: Sistema de Serviços e Produtos ::..");
 
         while (ok) {
             System.out.println("> Insira seu login: ");
@@ -134,7 +134,7 @@ public class Principal {
         int op = -1;
 
         // Escolhendo Categoria
-        System.out.println("> Escolha uma das categorias");
+        System.out.println("\n> Escolha uma das categorias");
         do {
             for (int i = 0; i < categorias.size(); i++) {
                 System.out.println((i+1) + " - " + categorias.get(i));
@@ -143,7 +143,7 @@ public class Principal {
 
             op = teclado.nextInt();
 
-            if ((op > categorias.size()+1) || (op < 0)) {
+            if ((op > categorias.size()+1) || (op < 1)) {
                 System.out.println("> Escolha inválida!");
             }
             else if (op == categorias.size()+1) {
@@ -163,8 +163,8 @@ public class Principal {
         // Escolhendo Prestador
         List<String> prestadores;
         prestadores = compra.listaPrestadores(categorias.get(op-1));
+        System.out.println("\n> Vendedores da categoria .:: " + categorias.get(op-1) + " ::.");
         aux = false; op = -1;
-        System.out.println("> Vendedores da categoria");
         do {
             for (int i = 0; i < prestadores.size(); i++) {
                 System.out.println((i+1) + " - " + prestadores.get(i));
@@ -173,7 +173,7 @@ public class Principal {
 
             op = teclado.nextInt();
 
-            if ((op > prestadores.size()+1) || (op < 0)) {
+            if ((op > prestadores.size()+1) || (op < 1)) {
                 System.out.println("> Escolha inválida!");
             }
             else if (op == prestadores.size()+1) {
@@ -190,42 +190,76 @@ public class Principal {
             return false;
         }
 
-        // Listar produtos do vendedor
-        // Lista de produtos
-        // O retorno da lista terá que ser objetos
-        // Inserir vendedores de todas as categorias
-
         // Escolhendo produtos
-        System.out.println("> Vendedor escolhido .:: " + prestadores.get(op-1) + "::.");
+        System.out.println("\n> Vendedor escolhido .:: " + prestadores.get(op-1) + " ::.");
         List<List<String>> listaProdutos;
         listaProdutos = compra.listarProdutos(prestadores.get(op-1));
         System.out.println("> Produtos disponíveis:");
         aux = false; op = -1;
-        boolean finalizar = false;
+        List<String> escolhasNome = new ArrayList<>();
+        List<Double> escolhasValor = new ArrayList<>();
+
+        for (int i = 0; i < listaProdutos.size(); i++) {
+            System.out.println((i+1) + " | " + listaProdutos.get(i).get(1) + " | " + listaProdutos.get(i).get(2));
+        }
+        System.out.println((listaProdutos.size()+1) + " - Finalizar compra");
+        System.out.println((listaProdutos.size()+2) + " - Voltar ao menu principal");
 
         do {
-            for (int i = 0; i < listaProdutos.size(); i++) {
-                System.out.println((i+1) + " | " + listaProdutos.get(i).get(0) + " | " + listaProdutos.get(i).get(1)
-                        + " | " + listaProdutos.get(i).get(2));
-            }
-            System.out.println((prestadores.size()+1) + " - Finalizar compra");
-            System.out.println((prestadores.size()+2) + " - Voltar ao menu principal");
-
             op = teclado.nextInt();
 
-            if ((op > prestadores.size()+2) || (op < 0)) {
+            if ((op > listaProdutos.size()+2) || (op < 0)) {
                 System.out.println("> Escolha inválida!");
             }
-            else if (op == prestadores.size()+1) {
+            else if (op == listaProdutos.size()+2) {
                 voltar = true;
                 break;
             }
-            else if (op == prestadores.size()+2) {
-                finalizar = true;
+            else if (op == listaProdutos.size()+1) {
+                aux = true;
+            } else {
+                escolhasNome.add(listaProdutos.get(op-1).get(1));
+                escolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2)));
+            }
+
+        } while(!aux);
+
+        // Verifica se deve cancelar a compra
+        if (voltar) {
+            return false;
+        }
+
+        // Visualizando compra
+        double total = 0;
+
+        System.out.println("> Produtos escolhidos:");
+        for (int i = 0; i < escolhasNome.size(); i++) {
+            System.out.println(escolhasNome.get(i) + " - " + escolhasValor.get(i));
+            total += escolhasValor.get(i);
+        }
+        System.out.println("> Valor total: R$ " + total);
+
+        // Forma de pagamento
+        
+
+        // Confirmando compra
+        aux = false; op = -1;
+        do {
+            System.out.println("1 - Confirmar compra");
+            System.out.println("2 - Voltar ao menu principal");
+            op = teclado.nextInt();
+
+           if (op == 2) {
+                voltar = true;
                 aux = true;
             }
-            
-        } while(!aux);
+            else if (op == 1) {
+                aux = true;
+            } else {
+               System.out.println("> Escolha inválida!");
+            }
+
+        } while (!aux);
 
         // Verifica se deve cancelar a compra
         if (voltar) {
