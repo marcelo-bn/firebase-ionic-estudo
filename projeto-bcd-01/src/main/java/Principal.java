@@ -190,12 +190,48 @@ public class Principal {
             return false;
         }
 
-        System.out.println("Vendedor escolhido " + prestadores.get(op-1));
-
         // Listar produtos do vendedor
         // Lista de produtos
         // O retorno da lista terá que ser objetos
         // Inserir vendedores de todas as categorias
+
+        // Escolhendo produtos
+        System.out.println("> Vendedor escolhido .:: " + prestadores.get(op-1) + "::.");
+        List<List<String>> listaProdutos;
+        listaProdutos = compra.listarProdutos(prestadores.get(op-1));
+        System.out.println("> Produtos disponíveis:");
+        aux = false; op = -1;
+        boolean finalizar = false;
+
+        do {
+            for (int i = 0; i < listaProdutos.size(); i++) {
+                System.out.println((i+1) + " | " + listaProdutos.get(i).get(0) + " | " + listaProdutos.get(i).get(1)
+                        + " | " + listaProdutos.get(i).get(2));
+            }
+            System.out.println((prestadores.size()+1) + " - Finalizar compra");
+            System.out.println((prestadores.size()+2) + " - Voltar ao menu principal");
+
+            op = teclado.nextInt();
+
+            if ((op > prestadores.size()+2) || (op < 0)) {
+                System.out.println("> Escolha inválida!");
+            }
+            else if (op == prestadores.size()+1) {
+                voltar = true;
+                break;
+            }
+            else if (op == prestadores.size()+2) {
+                finalizar = true;
+                aux = true;
+            }
+            
+        } while(!aux);
+
+        // Verifica se deve cancelar a compra
+        if (voltar) {
+            return false;
+        }
+
         return true;
     }
 

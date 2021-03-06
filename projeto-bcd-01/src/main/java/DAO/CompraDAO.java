@@ -2,6 +2,7 @@ package DAO;
 
 import db.ConnectionFactory;
 import entities.Categoria;
+import entities.Produto;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,6 +46,28 @@ public class CompraDAO {
         return prestadores;
     }
 
-    public void listarProdutos() {}
+    public List<List<String>> listarProdutos(String prestador) {
+        List<List<String>> listaProdutos = new ArrayList<>();
+        String query = "SELECT p.id, p.nome, p.preco FROM Produto p INNER JOIN Prestador pt ON p.loginPrestador = pt.login " +
+                "INNER JOIN Usuario u ON u.login = pt.login WHERE u.nome = " + "\'" + prestador + "\'" + " AND p.ativo = 1";
+
+        try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while(rs.next()) {
+                // retornar nome, código, preco (na main fazer loop excluindo index fora da faixa e que nao existem)
+                List<String> produtos = new ArrayList<>();
+
+                produtos.add(String.valueOf(rs.getInt("id")));
+                produtos.add(rs.getString("nome"));
+                produtos.add(rs.getString("preco"));
+
+                listaProdutos.add(produtos);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaProdutos;
+    }
 
 }
