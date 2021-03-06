@@ -1,8 +1,14 @@
-Usuario.java
- Usuario
 db/ConnectionFactory.java
  db.ConnectionFactory
+DAO/LoginDAO.java
+ DAO.LoginDAO
+entities/Produto.java
+ entities.Produto
+entities/Usuario.java
+ entities.Usuario
+entities/Categoria.java
+ entities.Categoria
+DAO/CompraDAO.java
+ DAO.CompraDAO
 Principal.java
  Principal
-LoginMySQL.java
- LoginMySQL
