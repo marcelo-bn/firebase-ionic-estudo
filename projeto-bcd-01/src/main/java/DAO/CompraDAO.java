@@ -70,4 +70,6 @@ public class CompraDAO {
         return listaProdutos;
     }
 
+    public void realizaCompra(List<Integer> listaIdprodutos, double total, String consumidor, String prestador, String data) {}
+
 }

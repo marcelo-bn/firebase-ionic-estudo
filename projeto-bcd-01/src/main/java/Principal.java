@@ -115,6 +115,7 @@ public class Principal {
                 System.out.println("> Login inválido");
             } else {
                 usuario = app.infoLogin(user);
+                this.usuario = usuario;
                 ok = false;
             }
         }
@@ -198,6 +199,7 @@ public class Principal {
         aux = false; op = -1;
         List<String> escolhasNome = new ArrayList<>();
         List<Double> escolhasValor = new ArrayList<>();
+        List<Integer> escolhasId = new ArrayList<>();
 
         for (int i = 0; i < listaProdutos.size(); i++) {
             System.out.println((i+1) + " | " + listaProdutos.get(i).get(1) + " | " + listaProdutos.get(i).get(2));
@@ -218,6 +220,7 @@ public class Principal {
             else if (op == listaProdutos.size()+1) {
                 aux = true;
             } else {
+                escolhasId.add(Integer.parseInt(listaProdutos.get(op-1).get(0)));
                 escolhasNome.add(listaProdutos.get(op-1).get(1));
                 escolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2)));
             }
@@ -231,7 +234,6 @@ public class Principal {
 
         // Visualizando compra
         double total = 0;
-
         System.out.println("> Produtos escolhidos:");
         for (int i = 0; i < escolhasNome.size(); i++) {
             System.out.println(escolhasNome.get(i) + " - " + escolhasValor.get(i));
@@ -240,7 +242,36 @@ public class Principal {
         System.out.println("> Valor total: R$ " + total);
 
         // Forma de pagamento
-        
+        aux = false; op = -1;
+        String formaPagamento = "";
+        if (this.usuario.getNumCartao() != null) {
+            System.out.println("> Forma de pagamento: ");
+            do {
+                System.out.println("1 - Débito");
+                System.out.println("2 - Crédito");
+                System.out.println("3 - Dinheiro");
+                op = teclado.nextInt();
+
+                switch (op) {
+                    case 1:
+                        formaPagamento = "Débito";
+                        aux = true;
+                        break;
+                    case 2:
+                        formaPagamento = "Crédito";
+                        aux = true;
+                        break;
+                    case 3:
+                        formaPagamento = "Dinheiro";
+                        aux = true;
+                        break;
+                    default:
+                        System.out.println("> Opção inválida!");
+                }
+            } while (!aux);
+        } else {
+            formaPagamento = "Dinheiro";
+        }
 
         // Confirmando compra
         aux = false; op = -1;
@@ -265,6 +296,9 @@ public class Principal {
         if (voltar) {
             return false;
         }
+
+        // Realizando compra
+        // compra.realizaCompra(escolhasId);
 
         return true;
     }

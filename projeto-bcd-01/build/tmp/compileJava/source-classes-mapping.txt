@@ -6,9 +6,9 @@ entities/Categoria.java
  entities.Categoria
 entities/Usuario.java
  entities.Usuario
-DAO/CompraDAO.java
- DAO.CompraDAO
 entities/Produto.java
  entities.Produto
+DAO/CompraDAO.java
+ DAO.CompraDAO
 Principal.java
  Principal
