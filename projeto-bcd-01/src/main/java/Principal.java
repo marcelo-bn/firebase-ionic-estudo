@@ -3,6 +3,8 @@ import DAO.LoginDAO;
 import entities.Categoria;
 import entities.Usuario;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 public class Principal {
 
     private final String[] CONSUMIDOR_principal = {
-            "\n> Bem vindo! Selecione uma das opções",
+            "\n> Menu principal, selecione uma das opções: ",
             "1 - Comprar",
             "2 - Listar todas as compras",
             "3 - Listar compras pendentes",
@@ -18,7 +20,6 @@ public class Principal {
     };
 
     private final String[] PRESTADOR_principal = {
-            "\n..:: Bem vindo! Selecione uma das opções ::..\n",
             "1 - Listar vendas realizadas",
             "2 - Listar vendas pendentes",
             "3 - Finalizar venda",
@@ -40,7 +41,7 @@ public class Principal {
 
         // Objeto entities.Usuario
         Usuario u = p.login();
-        System.out.println("> Olá, " + u.getNome() + "!");
+        System.out.print("\n..:: Olá, " + u.getNome() + "! ::..");
 
         // Verificando tipo do usuário
         if (u.getTipo().equals("consumidor")) {
@@ -104,7 +105,7 @@ public class Principal {
         Usuario usuario = new Usuario();
         boolean ok = true;
 
-        System.out.println("..:: Sistema de Serviços e Produtos ::..");
+        System.out.println("\n..:: Sistema de Serviços e Produtos ::..");
 
         while (ok) {
             System.out.println("> Insira seu login: ");
@@ -162,13 +163,13 @@ public class Principal {
         }
 
         // Escolhendo Prestador
-        List<String> prestadores;
+        List<List<String>> prestadores;
         prestadores = compra.listaPrestadores(categorias.get(op-1));
-        System.out.println("\n> Vendedores da categoria .:: " + categorias.get(op-1) + " ::.");
+        System.out.println("\n> Vendedores da categoria ..:: " + categorias.get(op-1) + " ::..");
         aux = false; op = -1;
         do {
             for (int i = 0; i < prestadores.size(); i++) {
-                System.out.println((i+1) + " - " + prestadores.get(i));
+                System.out.println((i+1) + " | " + prestadores.get(i).get(1) + "  (" + prestadores.get(i).get(0) + ")");
             }
             System.out.println((prestadores.size()+1) + " - Voltar ao menu principal");
 
@@ -192,14 +193,16 @@ public class Principal {
         }
 
         // Escolhendo produtos
-        System.out.println("\n> Vendedor escolhido .:: " + prestadores.get(op-1) + " ::.");
+        String prestadorEscolhidoLogin = prestadores.get(op-1).get(0);
+        String prestadorEscolhidoNome = prestadores.get(op-1).get(1);
+        System.out.println("\n> Vendedor escolhido ..:: " + prestadorEscolhidoNome + " ::..");
         List<List<String>> listaProdutos;
-        listaProdutos = compra.listarProdutos(prestadores.get(op-1));
+        listaProdutos = compra.listarProdutos(prestadorEscolhidoNome);
         System.out.println("> Produtos disponíveis:");
         aux = false; op = -1;
-        List<String> escolhasNome = new ArrayList<>();
-        List<Double> escolhasValor = new ArrayList<>();
-        List<Integer> escolhasId = new ArrayList<>();
+        List<String> produtosEscolhasNome = new ArrayList<>();
+        List<Double> produtosEscolhasValor = new ArrayList<>();
+        List<Integer> produtosEscolhasId = new ArrayList<>();
 
         for (int i = 0; i < listaProdutos.size(); i++) {
             System.out.println((i+1) + " | " + listaProdutos.get(i).get(1) + " | " + listaProdutos.get(i).get(2));
@@ -220,9 +223,9 @@ public class Principal {
             else if (op == listaProdutos.size()+1) {
                 aux = true;
             } else {
-                escolhasId.add(Integer.parseInt(listaProdutos.get(op-1).get(0)));
-                escolhasNome.add(listaProdutos.get(op-1).get(1));
-                escolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2)));
+                produtosEscolhasId.add(Integer.parseInt(listaProdutos.get(op-1).get(0)));
+                produtosEscolhasNome.add(listaProdutos.get(op-1).get(1));
+                produtosEscolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2)));
             }
 
         } while(!aux);
@@ -235,10 +238,11 @@ public class Principal {
         // Visualizando compra
         double total = 0;
         System.out.println("> Produtos escolhidos:");
-        for (int i = 0; i < escolhasNome.size(); i++) {
-            System.out.println(escolhasNome.get(i) + " - " + escolhasValor.get(i));
-            total += escolhasValor.get(i);
+        for (int i = 0; i < produtosEscolhasNome.size(); i++) {
+            System.out.println(produtosEscolhasNome.get(i) + " - R$ " + produtosEscolhasValor.get(i));
+            total += produtosEscolhasValor.get(i);
         }
+        total = Math.floor(total * 100) / 100;
         System.out.println("> Valor total: R$ " + total);
 
         // Forma de pagamento
@@ -247,22 +251,17 @@ public class Principal {
         if (this.usuario.getNumCartao() != null) {
             System.out.println("> Forma de pagamento: ");
             do {
-                System.out.println("1 - Débito");
-                System.out.println("2 - Crédito");
-                System.out.println("3 - Dinheiro");
+                System.out.println("1 - Cartão");
+                System.out.println("2 - Dinheiro");
                 op = teclado.nextInt();
 
                 switch (op) {
                     case 1:
-                        formaPagamento = "Débito";
+                        formaPagamento = "cartão";
                         aux = true;
                         break;
                     case 2:
-                        formaPagamento = "Crédito";
-                        aux = true;
-                        break;
-                    case 3:
-                        formaPagamento = "Dinheiro";
+                        formaPagamento = "dinheiro";
                         aux = true;
                         break;
                     default:
@@ -270,11 +269,12 @@ public class Principal {
                 }
             } while (!aux);
         } else {
-            formaPagamento = "Dinheiro";
+            formaPagamento = "dinheiro";
         }
 
         // Confirmando compra
         aux = false; op = -1;
+        System.out.println("> Confirmar compra:");
         do {
             System.out.println("1 - Confirmar compra");
             System.out.println("2 - Voltar ao menu principal");
@@ -298,7 +298,8 @@ public class Principal {
         }
 
         // Realizando compra
-        // compra.realizaCompra(escolhasId);
+        String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        compra.realizaCompra(produtosEscolhasId, total, this.usuario.getLogin(), prestadorEscolhidoLogin, date, formaPagamento);
 
         return true;
     }
