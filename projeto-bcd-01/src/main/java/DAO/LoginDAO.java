@@ -14,6 +14,8 @@ public class LoginDAO {
 
     /**
      * Listando todos os logins de Consumidor e Prestador
+     * @param n
+     * @return Vetor de String como todos os logins (Consumidor e Prestador)
      */
     public String[] verificaLogin(String n) {
         String nome = n;
@@ -47,7 +49,9 @@ public class LoginDAO {
     }
 
     /**
-        Informações de determinado usuário
+     * Informações de determinado usuário
+     * @param login
+     * @return Retornar um objeto da classe Usuario
      */
     public Usuario infoLogin(String[] login) {
         String query = "";

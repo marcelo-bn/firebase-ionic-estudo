@@ -1,7 +1,6 @@
+package Menu;
+
 import DAO.CompraDAO;
-import DAO.LoginDAO;
-import Menu.CompraMenu;
-import entities.Categoria;
 import entities.Usuario;
 
 import java.time.LocalDate;
@@ -10,126 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Principal {
-
-    private final String[] CONSUMIDOR_principal = {
-            "\n> Menu principal, selecione uma das opções: ",
-            "1 - Comprar",
-            "2 - Listar todas as compras",
-            "3 - Listar compras pendentes",
-            "4 - Sair do sistema"
-    };
-
-    private final String[] PRESTADOR_principal = {
-            "1 - Listar vendas realizadas",
-            "2 - Listar vendas pendentes",
-            "3 - Finalizar venda",
-            "4 - Sair do sistema"
-    };
+public class CompraMenu {
 
     private Scanner teclado;
-    private Usuario usuario;
 
-    public Principal() {
-        this.teclado = new Scanner(System.in);
-        this.usuario = new Usuario();
-    }
+    public CompraMenu() { this.teclado = new Scanner(System.in); }
 
-    public static void main(String[] args) {
-
-        Principal p = new Principal();
-        CompraMenu compraMenu = new CompraMenu();
-        int op = -1;
-
-        // Objeto entities.Usuario
-        Usuario u = p.login();
-        System.out.print("\n..:: Olá, " + u.getNome() + "! ::..");
-
-        // Verificando tipo do usuário
-        if (u.getTipo().equals("consumidor")) {
-            while (true) {
-                op = p.menuGeral(p.CONSUMIDOR_principal);
-
-                switch (op) {
-                    case 1:
-                        if (compraMenu.consumidorCompra(u)) {
-                            System.out.println("> Compra realizada!");
-                        } else {
-                            System.out.println("> Compra cancelada!");
-                        }
-                        break;
-                    case 2:
-                        System.out.println();
-                        break;
-                    default:
-                        System.out.println("> Opção inválida!");
-                        break;
-                }
-            }
-
-        } else {
-            op = p.menuGeral(p.PRESTADOR_principal);
-            System.out.println(op);
-        }
-
-    }
-
-    /**
-     * Apresenta menu de opções
-     * @param menuComOpcoes
-     * @return
-     */
-    private int menuGeral(String[] menuComOpcoes) {
-        int opcao = -1;
-        if (menuComOpcoes != null) {
-            for (String linha : menuComOpcoes) {
-                System.out.println(linha);
-            }
-            System.out.print("Entre com uma opção: ");
-            try {
-                opcao = teclado.nextInt();
-            } catch (Exception e) {
-                System.err.println("Erro. Informe um número inteiro.");
-                opcao = -1;
-                teclado.nextLine();// consumindo caracter extra NL/CR
-            }
-
-        }
-        return opcao;
-    }
-
-    /**
-     * Realiza o procedimento de login no sistema
-     * @return entities.Usuario
-     */
-    private Usuario login() {
-        LoginDAO app = new LoginDAO();
-        Usuario usuario = new Usuario();
-        boolean ok = true;
-
-        System.out.println("\n..:: Sistema de Serviços e Produtos ::..");
-
-        while (ok) {
-            System.out.println("> Insira seu login: ");
-            String nome = this.teclado.nextLine();
-            String[] user = app.verificaLogin(nome);
-
-            if (user[0].equals("error")) {
-                System.out.println("> Login inválido");
-            } else {
-                usuario = app.infoLogin(user);
-                this.usuario = usuario;
-                ok = false;
-            }
-        }
-
-        return usuario;
-    }
-
-    /**
-     * Realiza os procedimentos de compra do Consumidor
-     */
-    private boolean consumidorCompra() {
+    public boolean consumidorCompra(Usuario usuario) {
         CompraDAO compra = new CompraDAO();
         List<String> categorias;
         categorias = compra.listaCategorias();
@@ -250,7 +136,7 @@ public class Principal {
         // Forma de pagamento
         aux = false; op = -1;
         String formaPagamento = "";
-        if (this.usuario.getNumCartao() != null) {
+        if (usuario.getNumCartao() != null) {
             System.out.println("> Forma de pagamento: ");
             do {
                 System.out.println("1 - Cartão");
@@ -282,14 +168,14 @@ public class Principal {
             System.out.println("2 - Voltar ao menu principal");
             op = teclado.nextInt();
 
-           if (op == 2) {
+            if (op == 2) {
                 voltar = true;
                 aux = true;
             }
             else if (op == 1) {
                 aux = true;
             } else {
-               System.out.println("> Escolha inválida!");
+                System.out.println("> Escolha inválida!");
             }
 
         } while (!aux);
@@ -301,7 +187,7 @@ public class Principal {
 
         // Inseridno ocorrência na entidade Compra
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        int idCompra = compra.realizaCompra(produtosEscolhasId, total, this.usuario.getLogin(), prestadorEscolhidoLogin, date, formaPagamento);
+        int idCompra = compra.realizaCompra(produtosEscolhasId, total, usuario.getLogin(), prestadorEscolhidoLogin, date, formaPagamento);
 
         // Inseridno ocorrência na entidade Lista_Produtos
         for (int idProduto: produtosEscolhasId) {
@@ -311,5 +197,4 @@ public class Principal {
         return true;
     }
 
-    private void prestador() {}
 }

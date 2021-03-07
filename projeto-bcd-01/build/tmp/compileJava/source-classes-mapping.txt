@@ -1,14 +1,16 @@
 db/ConnectionFactory.java
  db.ConnectionFactory
-DAO/LoginDAO.java
- DAO.LoginDAO
+entities/Produto.java
+ entities.Produto
 entities/Categoria.java
  entities.Categoria
 entities/Usuario.java
  entities.Usuario
-entities/Produto.java
- entities.Produto
+DAO/LoginDAO.java
+ DAO.LoginDAO
 DAO/CompraDAO.java
  DAO.CompraDAO
 Principal.java
  Principal
+Menu/CompraMenu.java
+ Menu.CompraMenu

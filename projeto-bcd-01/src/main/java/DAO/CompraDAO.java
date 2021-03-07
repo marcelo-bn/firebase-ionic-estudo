@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class CompraDAO {
 
+    /**
+     * Realiza a consulta de todas as categorias
+     * @return Retorna uma lista de Strings como o nome das Categorias
+     */
     public List<String> listaCategorias() {
         List<String> categorias = new ArrayList<>();
         String query = "SELECT * FROM Categoria";
@@ -30,6 +34,11 @@ public class CompraDAO {
         return categorias;
     }
 
+    /**
+     * Consulta os prestadores de determinada Categoria
+     * @param categoria
+     * @return Lista de Listas de String contendo informações relevantes dos Prestadores
+     */
     public List<List<String>> listaPrestadores(String categoria) {
         List<List<String>> prestadores = new ArrayList<>();
         String query = "SELECT DISTINCT u.nome, pt.login FROM Prestador pt INNER JOIN Produto p ON pt.login = p.loginPrestador " +
@@ -49,6 +58,11 @@ public class CompraDAO {
         return prestadores;
     }
 
+    /**
+     * Consulta os produtos de determinado Prestador
+     * @param prestador
+     * @return Lista de Listas de String contendo informações relevantes dos Produtos
+     */
     public List<List<String>> listarProdutos(String prestador) {
         List<List<String>> listaProdutos = new ArrayList<>();
         String query = "SELECT p.id, p.nome, p.preco FROM Produto p INNER JOIN Prestador pt ON p.loginPrestador = pt.login " +
@@ -73,6 +87,10 @@ public class CompraDAO {
         return listaProdutos;
     }
 
+    /**
+     * Consulta o id máximo presente na tabela Compra
+     * @return id máximo
+     */
     public int maxIDcompra() {
         String query = "SELECT MAX(id) as maxId FROM Compra";
         int maxId = 0;
@@ -90,7 +108,17 @@ public class CompraDAO {
         return maxId;
     }
 
-    public void realizaCompra(List<Integer> listaIdprodutos, double total, String consumidor, String prestador, String data, String formaPag) {
+    /**
+     * Insere ocorrência na tabela Compra
+     * @param listaIdprodutos
+     * @param total
+     * @param consumidor
+     * @param prestador
+     * @param data
+     * @param formaPag
+     * @return Id da ocorrência
+     */
+    public int realizaCompra(List<Integer> listaIdprodutos, double total, String consumidor, String prestador, String data, String formaPag) {
         int idCompra = maxIDcompra()+1;
         String query =
                 "INSERT INTO Compra (id,loginConsumidor,loginPrestador,inicio,status,total,formaPagamento) VALUES (?,?,?,?,?,?,?)";
@@ -110,8 +138,25 @@ public class CompraDAO {
             e.printStackTrace();
         }
 
+        return idCompra;
     }
 
-    public void listaDeProdutos(int idCompra) {}
+    /**
+     * Insere ocorrência na tabela Lista_Produtos
+     * @param idProduto
+     * @param idCompra
+     */
+    public void listaDeProdutos(int idProduto, int idCompra) {
+
+        String query = "INSERT INTO Lista_Produtos (idProduto,idCompra) VALUES (?,?)";
+
+        try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(query)) {
+            stmt.setInt(1,idProduto);
+            stmt.setInt(2,idCompra);
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
