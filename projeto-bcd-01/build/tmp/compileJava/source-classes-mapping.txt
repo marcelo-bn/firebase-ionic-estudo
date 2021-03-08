@@ -8,9 +8,21 @@ entities/Usuario.java
  entities.Usuario
 DAO/LoginDAO.java
  DAO.LoginDAO
-DAO/CompraDAO.java
- DAO.CompraDAO
+Menu/Prestador/FinalizarVendaMenu.java
+ Menu.Prestador.FinalizarVendaMenu
+DAO/Consumidor/CompraDAO.java
+ DAO.Consumidor.CompraDAO
+DAO/Prestador/ListarVendasDAO.java
+ DAO.Prestador.ListarVendasDAO
+DAO/Prestador/FinalizarVendaDAO.java
+ DAO.Prestador.FinalizarVendaDAO
+Menu/Prestador/ListarVendasMenu.java
+ Menu.Prestador.ListarVendasMenu
+Menu/Consumidor/CompraMenu.java
+ Menu.Consumidor.CompraMenu
 Principal.java
  Principal
-Menu/CompraMenu.java
- Menu.CompraMenu
+DAO/Consumidor/ListarComprasDAO.java
+ DAO.Consumidor.ListarComprasDAO
+Menu/Consumidor/ListarComprasMenu.java
+ Menu.Consumidor.ListarComprasMenu
