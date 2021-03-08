@@ -56,7 +56,7 @@ public class Principal {
                         }
                         break;
                     case 2:
-                        listarComprasMenu.geral(u);
+                        listarComprasMenu.listar(u);
                         break;
                     case 3:
                         listarComprasMenu.pendentes(u);
@@ -67,7 +67,7 @@ public class Principal {
                         System.out.println("> Opção inválida!");
                         break;
                 }
-            }  while (op!=4);
+           }  while (op!=4);
 
         } else {
             op = p.menuGeral(p.PRESTADOR_principal);
@@ -129,6 +129,4 @@ public class Principal {
         return usuario;
     }
 
-
-    private void prestador() {}
 }

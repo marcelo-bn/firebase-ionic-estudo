@@ -9,19 +9,16 @@ import java.sql.SQLException;
 public class ListarComprasDAO {
 
     /**
-     * Realiza consulta de todas as compras de um cliente
-     * @param loginConsumidor
+     * Realiza consulta de todas as compras de um cliente ou somente das compras Pendentes
+     * @param q
      * @return Vetor de String, [0] - StringBuilder, [1] - String de idCompra
      */
-    public String[] todasCompras(String loginConsumidor) {
-
-        String query = "SELECT c.id as idCompra, u.nome as prestador, c.status, c.total, c.inicio, c.fim FROM Compra c " +
-                "INNER JOIN Usuario u ON c.loginPrestador = u.login WHERE loginConsumidor = " + "\'" + loginConsumidor + "\'";
+    public String[] listarCompras(String q) {
 
         StringBuilder sb = new StringBuilder();
         String lista_idCompra = "";
 
-        try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(query);
+        try (PreparedStatement stmt = ConnectionFactory.getDBConnection().prepareStatement(q);
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
@@ -96,5 +93,4 @@ public class ListarComprasDAO {
         return sb.toString();
     }
 
-    public void pendentesCompras(String loginConsumidor) {}
 }

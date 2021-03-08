@@ -11,10 +11,21 @@ public class ListarComprasMenu {
 
     public ListarComprasMenu() { this.teclado = new Scanner(System.in); }
 
-    public boolean geral(Usuario u) {
+    public boolean listar(Usuario u) {
+        String query = "SELECT c.id as idCompra, u.nome as prestador, c.status, c.total, c.inicio, c.fim FROM Compra c " +
+                "INNER JOIN Usuario u ON c.loginPrestador = u.login WHERE loginConsumidor = " + "\'" + u.getLogin() + "\'";
+        return menu(query, u);
+    }
 
+    public boolean pendentes(Usuario u) {
+        String query = "SELECT c.id as idCompra, u.nome as prestador, c.status, c.total, c.inicio, c.fim FROM Compra c " +
+                "INNER JOIN Usuario u ON c.loginPrestador = u.login WHERE loginConsumidor = " + "\'" + u.getLogin() + "\' AND c.status = \'pendente\'";
+        return menu(query, u);
+    }
+
+    public boolean menu(String query, Usuario u) {
         ListarComprasDAO l = new ListarComprasDAO();
-        String[] compras = l.todasCompras(u.getLogin());
+        String[] compras = l.listarCompras(query);
         boolean aux = false; int op = -1; boolean voltar = false;
 
         // Tabela com todas as compras
@@ -40,7 +51,7 @@ public class ListarComprasMenu {
                         System.out.println("> Digite o código de uma compra:");
                         boolean contem = false;
                         op = teclado.nextInt();
-                        for (int j : idCompra_integer) {
+                        for (int j : idCompra_integer) { // Verifica se op é um dos idCompra
                             if (op == j) {
                                 aux = true;
                                 contem = true;
@@ -62,8 +73,7 @@ public class ListarComprasMenu {
         } while (!aux);
 
         return true;
-
     }
 
-    public void pendentes(Usuario u) {}
+
 }
