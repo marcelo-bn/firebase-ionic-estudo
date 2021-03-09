@@ -1,6 +1,8 @@
 import DAO.LoginDAO;
 import Menu.Consumidor.CompraMenu;
 import Menu.Consumidor.ListarComprasMenu;
+import Menu.Prestador.FinalizarVendaMenu;
+import Menu.Prestador.ListarVendasMenu;
 import entities.Usuario;
 
 import java.util.Scanner;
@@ -16,6 +18,7 @@ public class Principal {
     };
 
     private final String[] PRESTADOR_principal = {
+            "\n> Menu principal, selecione uma das opções: ",
             "1 - Listar vendas realizadas",
             "2 - Listar vendas pendentes",
             "3 - Finalizar venda",
@@ -56,7 +59,7 @@ public class Principal {
                         }
                         break;
                     case 2:
-                        listarComprasMenu.listar(u);
+                        listarComprasMenu.geral(u);
                         break;
                     case 3:
                         listarComprasMenu.pendentes(u);
@@ -70,8 +73,28 @@ public class Principal {
            }  while (op!=4);
 
         } else {
-            op = p.menuGeral(p.PRESTADOR_principal);
-            System.out.println(op);
+            ListarVendasMenu vendas = new ListarVendasMenu();
+            FinalizarVendaMenu finalizar = new FinalizarVendaMenu();
+
+            do {
+                op = p.menuGeral(p.PRESTADOR_principal);
+
+                switch (op) {
+                    case 1:
+                        vendas.geral(u);
+                        break;
+                    case 2:
+                        vendas.pendentes(u);
+                        break;
+                    case 3:
+                        System.out.println("> Finalizar venda");
+                        break;
+                    default:
+                        break;
+                }
+
+            } while(op!=4);
+
         }
 
         System.out.println("> Saindo...");

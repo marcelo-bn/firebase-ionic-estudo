@@ -11,7 +11,7 @@ public class ListarComprasMenu {
 
     public ListarComprasMenu() { this.teclado = new Scanner(System.in); }
 
-    public boolean listar(Usuario u) {
+    public boolean geral(Usuario u) {
         String query = "SELECT c.id as idCompra, u.nome as prestador, c.status, c.total, c.inicio, c.fim FROM Compra c " +
                 "INNER JOIN Usuario u ON c.loginPrestador = u.login WHERE loginConsumidor = " + "\'" + u.getLogin() + "\'";
         return menu(query, u);
