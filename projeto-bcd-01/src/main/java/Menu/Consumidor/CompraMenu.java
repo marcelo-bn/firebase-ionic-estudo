@@ -6,6 +6,7 @@ import entities.Usuario;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -87,16 +88,20 @@ public class CompraMenu {
         String prestadorEscolhidoLogin = prestadores.get(op-1).get(0);
         String prestadorEscolhidoNome = prestadores.get(op-1).get(1);
         System.out.println("\n> Vendedor escolhido ..:: " + prestadorEscolhidoNome + " ::..");
+
         List<List<String>> listaProdutos;
         listaProdutos = compra.listarProdutos(prestadorEscolhidoNome);
+
         System.out.println("> Produtos disponíveis:");
         aux = false; op = -1;
+
         List<String> produtosEscolhasNome = new ArrayList<>();
         List<Double> produtosEscolhasValor = new ArrayList<>();
         List<Integer> produtosEscolhasId = new ArrayList<>();
 
+        System.out.println("> Escolha os produtos:");
         for (int i = 0; i < listaProdutos.size(); i++) {
-            System.out.println((i+1) + " | " + listaProdutos.get(i).get(1) + " | " + listaProdutos.get(i).get(2));
+            System.out.println((i+1) + " | " + listaProdutos.get(i).get(1) + " | R$ " + listaProdutos.get(i).get(2));
         }
         System.out.println((listaProdutos.size()+1) + " - Finalizar compra");
         System.out.println((listaProdutos.size()+2) + " - Voltar ao menu principal");
@@ -114,9 +119,9 @@ public class CompraMenu {
             else if (op == listaProdutos.size()+1) {
                 aux = true;
             } else {
-                produtosEscolhasId.add(Integer.parseInt(listaProdutos.get(op-1).get(0)));
-                produtosEscolhasNome.add(listaProdutos.get(op-1).get(1));
-                produtosEscolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2)));
+                produtosEscolhasId.add(Integer.parseInt(listaProdutos.get(op-1).get(0))); // idProduto
+                produtosEscolhasNome.add(listaProdutos.get(op-1).get(1)); // nomeProduto
+                produtosEscolhasValor.add(Double.parseDouble(listaProdutos.get(op-1).get(2))); // precoProduto
             }
 
         } while(!aux);
@@ -126,8 +131,27 @@ public class CompraMenu {
             return false;
         }
 
+        // Verificando a quantidade dos produtos
+        Collections.sort(produtosEscolhasId); // Ordenando lista de idProduto
+        List<String> quantidadeProdutos = new ArrayList<>(); // Lista de produtos e suas quantidades
+
+        String sqt;
+        int anterior = produtosEscolhasId.get(0);
+        sqt = anterior + "-" + Collections.frequency(produtosEscolhasId, anterior);
+        quantidadeProdutos.add(sqt);
+
+        for (int i = 1; i < produtosEscolhasId.size(); i++) {
+            int atual = produtosEscolhasId.get(i);
+            if (anterior != atual) {
+                sqt = atual + "-" + Collections.frequency(produtosEscolhasId, atual);
+                quantidadeProdutos.add(sqt);
+                anterior = atual;
+            }
+        }
+
         // Visualizando compra
         double total = 0;
+        
         System.out.println("> Produtos escolhidos:");
         for (int i = 0; i < produtosEscolhasNome.size(); i++) {
             System.out.println(produtosEscolhasNome.get(i) + " - R$ " + produtosEscolhasValor.get(i));

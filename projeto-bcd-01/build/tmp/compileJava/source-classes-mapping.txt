@@ -16,13 +16,13 @@ DAO/Consumidor/ListarComprasDAO.java
  DAO.Consumidor.ListarComprasDAO
 DAO/Prestador/FinalizarVendaDAO.java
  DAO.Prestador.FinalizarVendaDAO
-Menu/Consumidor/CompraMenu.java
- Menu.Consumidor.CompraMenu
-Menu/Consumidor/ListarComprasMenu.java
- Menu.Consumidor.ListarComprasMenu
-Principal.java
- Principal
 DAO/Prestador/ListarVendasDAO.java
  DAO.Prestador.ListarVendasDAO
+Menu/Consumidor/ListarComprasMenu.java
+ Menu.Consumidor.ListarComprasMenu
 Menu/Prestador/ListarVendasMenu.java
  Menu.Prestador.ListarVendasMenu
+Principal.java
+ Principal
+Menu/Consumidor/CompraMenu.java
+ Menu.Consumidor.CompraMenu
